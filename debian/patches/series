@@ -1,0 +1,3 @@
+skip-if-not-importlib_resources.patch
+relax-configparser-version.patch
+skip-tests-requiring-pyfakefs.patch

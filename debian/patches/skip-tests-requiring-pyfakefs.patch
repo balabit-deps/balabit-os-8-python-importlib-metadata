@@ -1,0 +1,38 @@
+Description: Skip tests requiring pyfakefs
+Author: Ondřej Nový <onovy@debian.org>
+
+We don't have pyfakefs in Debian (yet).
+
+--- a/importlib_metadata/tests/test_main.py
++++ b/importlib_metadata/tests/test_main.py
+@@ -8,7 +8,6 @@
+ import unittest
+ import importlib
+ import importlib_metadata
+-import pyfakefs.fake_filesystem_unittest as ffs
+ 
+ from . import fixtures
+ from .. import (
+@@ -205,22 +204,6 @@
+         importlib_metadata.distributions()
+ 
+ 
+-class InaccessibleSysPath(fixtures.OnSysPath, ffs.TestCase):
+-    site_dir = '/access-denied'
+-
+-    def setUp(self):
+-        super(InaccessibleSysPath, self).setUp()
+-        self.setUpPyfakefs()
+-        self.fs.create_dir(self.site_dir, perm_bits=000)
+-
+-    def test_discovery(self):
+-        """
+-        Discovering distributions should succeed even if
+-        there is an invalid path on sys.path.
+-        """
+-        list(importlib_metadata.distributions())
+-
+-
+ class TestEntryPoints(unittest.TestCase):
+     def __init__(self, *args):
+         super(TestEntryPoints, self).__init__(*args)
